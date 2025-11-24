@@ -13,7 +13,8 @@
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
 int main(){
-    char testStrings[128] = "<url>aduhai kerennyo, when yah jadi jaog</url>sedih la macam nie";
+    // char testStrings[128] = "<url>aduhai kerennyo, when yah jadi jaog</url>sedih la macam nie";
+    char testStrings[128] = "<url>gokil</url>gatau lah apa ni";
 
     char openTag[] = "<url>";
     char closeTag[] = "</url>";
@@ -21,18 +22,22 @@ int main(){
     char *ambilPertama = strstr(testStrings, openTag);
     char *ambilKedua = strstr(ambilPertama, closeTag);
 
-    ambilPertama += strlen(openTag);
+    // ambilPertama += strlen(openTag);
 
     char dest[128];
-    // printf("%d %d", strlen(openTag), strlen(closeTag));
-    int length = strlen(ambilPertama) - strlen(ambilKedua);
-    printf("%d\n\n", length);
+    // // printf("%d %d", strlen(openTag), strlen(closeTag));
+    // int length = strlen(ambilPertama) - strlen(ambilKedua);
+    // printf("%d\n\n", length);
 
-    strncpy(dest, ambilPertama, length);
-    printf("%s", dest);
+    // strncpy(dest, ambilPertama, length);
+    // printf("%s", dest);
 
     // printf("%s\n\n", ambilPertama);
     // printf("%s", ambilKedua);
+
+    ambilKedua += strlen(closeTag);
+    strcpy(dest, ambilKedua);
+    printf("%s", dest);       
 
     return EXIT_SUCCESS;
 }
