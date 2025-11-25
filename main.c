@@ -12,9 +12,33 @@
 //     int frekuensi;
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
+void removeUrlTag(char *targetStr, char *dest){
+    char openTag[] = "<url>";
+    char closeTag[] = "</url>";
+
+    char *ambilPertama = strstr(targetStr, openTag);
+    char *ambilKedua = strstr(ambilPertama, closeTag);
+
+    ambilKedua += strlen(closeTag);
+    strcpy(dest, ambilKedua);
+    printf("%s", dest);    
+}
+
+void takeStringBetweenTag(char *targetStr, char *dest){
+    char *openTags = {"<title>", "<body>"};
+    char *closeTags = {"</title>", "</body>"};
+
+    char *ambilPertama = strstr(targetStr, openTag);
+    char *ambilKedua = strstr(ambilPertama, closeTag);
+
+    ambilPertama += strlen(openTag);
+    int length = strlen(ambilPertama) - strlen(ambilKedua);
+
+    strncpy(dest, ambilPertama, length);
+} 
+
 int main(){
-    // char testStrings[128] = "<url>aduhai kerennyo, when yah jadi jaog</url>sedih la macam nie";
-    char testStrings[128] = "<url>gokil</url>gatau lah apa ni";
+    char testStrings[1024] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>";
 
     char openTag[] = "<url>";
     char closeTag[] = "</url>";
@@ -24,7 +48,7 @@ int main(){
 
     // ambilPertama += strlen(openTag);
 
-    char dest[128];
+    char dest[1024];
     // // printf("%d %d", strlen(openTag), strlen(closeTag));
     // int length = strlen(ambilPertama) - strlen(ambilKedua);
     // printf("%d\n\n", length);
@@ -34,10 +58,8 @@ int main(){
 
     // printf("%s\n\n", ambilPertama);
     // printf("%s", ambilKedua);
-
-    ambilKedua += strlen(closeTag);
-    strcpy(dest, ambilKedua);
-    printf("%s", dest);       
-
+    
+    removeUrlTag(testStrings, dest);
+    printf("%s", dest);    
     return EXIT_SUCCESS;
 }
