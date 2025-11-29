@@ -12,6 +12,19 @@
 //     int frekuensi;
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
+typedef struct {
+    char kata[1024];
+    int panjangKata;
+    int frekuensi;
+} InfoinKata;
+
+typedef struct {
+    char abjad;
+    int jumlahKataAbjad;
+    InfoinKata daftarKata[2048];
+} GrupinAbjad;
+
+//==pisahin tag==
 void removeUrlTag(char *targetStr, char *dest){
     char openTag[] = "<url>";
     char closeTag[] = "</url>";
@@ -36,6 +49,38 @@ void takeStringBetweenTag(char *targetStr, char *dest){
 
     strncpy(dest, ambilPertama, length);
 } 
+
+//==bersihin kata==
+void cleanWord(const char *masukan, char *keluaran){
+    int removeDigit = 1;
+    int removePunct = 1;
+    int changeHuruf = 1;
+
+    int i = 0;
+    int j = 0;
+    char karakter;
+
+    while((karakter = masukan[i]) != '\0'){
+        if(removeDigit && isdigit((unsigned char)karakter)){
+            i++;
+            continue;
+        }
+        if(removePunct && !isalpha((unsigned char)karakter)){
+            i++;
+            continue;
+        }
+        if(changeHuruf){
+            karakter = tolower((unsigned char)karakter);
+        }
+        keluaran[j] = karakter;
+        j++;
+        i++;
+    }
+
+    keluaran[j] = '\0';
+}
+
+//==urutin==
 
 int main(){
     char testStrings[1024] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>";
