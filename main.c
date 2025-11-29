@@ -81,6 +81,32 @@ void cleanWord(const char *masukan, char *keluaran){
 }
 
 //==urutin==
+void addWordToGroup(char *kataBersih){
+    if(strlen(kataBersih) == 0){
+        return;
+    }
+
+    char hurufAwal = kataBersih[0];
+    if(hurufAwal < 'a' || hurufAwal > 'z'){
+    return;
+    }
+
+    int nomorAbjad = hurufAwal - 'a';
+    GrupinAbjad *ptr = &groups[nomorAbjad];
+
+    int i;
+    for(i = 0; i < (*ptr).jumlahKataAbjad; i++){
+        if(strcmp((*ptr).daftarKata[i].kata, kataBersih) == 0){
+            (*ptr).daftarKata[i].frekuensi++;
+            return;
+        }
+    }
+
+    strcpy((*ptr).daftarKata[(*ptr).jumlahKataAbjad].kata, kataBersih);
+    (*ptr).daftarKata[(*ptr).jumlahKataAbjad].panjangKata = strlen(kataBersih);
+    (*ptr).daftarKata[(*ptr).jumlahKataAbjad].frekuensi = 1;
+    (*ptr).jumlahKataAbjad++;
+}
 
 int main(){
     char testStrings[1024] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>";
