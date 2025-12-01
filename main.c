@@ -12,54 +12,56 @@
 //     int frekuensi;
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
-void removeUrlTag(char *targetStr, char *dest){
-    char openTag[] = "<url>";
-    char closeTag[] = "</url>";
-
-    char *ambilPertama = strstr(targetStr, openTag);
-    char *ambilKedua = strstr(ambilPertama, closeTag);
-
-    ambilKedua += strlen(closeTag);
-    strcpy(dest, ambilKedua);
-    printf("%s", dest);    
-}
-
 void takeStringBetweenTag(char *targetStr, char *dest){
-    char *openTags = {"<title>", "<body>"};
-    char *closeTags = {"</title>", "</body>"};
+    int i = 0, j = 0;
 
-    char *ambilPertama = strstr(targetStr, openTag);
-    char *ambilKedua = strstr(ambilPertama, closeTag);
+    // remove url bro
+    while(targetStr[i] != '\0'){
+        if(strncmp(&targetStr[i], "<url>", 5) == 0){
+            char *endText = strstr(&targetStr[i], "</url>");
+            if(endText == NULL) break;
+            i = (endText - targetStr) + 6;
+            continue;
+        }
 
-    ambilPertama += strlen(openTag);
-    int length = strlen(ambilPertama) - strlen(ambilKedua);
-
-    strncpy(dest, ambilPertama, length);
+        // finding tag
+        if(targetStr[i] == '<'){
+            while(targetStr[i] != '>' && targetStr[i] != '\0'){
+                i++;
+            }
+            if(targetStr[i] == '>') {i++;};
+            continue;
+        }
+        dest[j++] = targetStr[i++];
+    }
+    dest += '\0';
 } 
 
+
 int main(){
-    char testStrings[1024] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>";
+    // char testStrings[2048] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>AAAAA<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang</body>";
 
-    char openTag[] = "<url>";
-    char closeTag[] = "</url>";
-
-    char *ambilPertama = strstr(testStrings, openTag);
-    char *ambilKedua = strstr(ambilPertama, closeTag);
-
-    // ambilPertama += strlen(openTag);
-
-    char dest[1024];
-    // // printf("%d %d", strlen(openTag), strlen(closeTag));
-    // int length = strlen(ambilPertama) - strlen(ambilKedua);
-    // printf("%d\n\n", length);
-
-    // strncpy(dest, ambilPertama, length);
-    // printf("%s", dest);
-
-    // printf("%s\n\n", ambilPertama);
-    // printf("%s", ambilKedua);
+    char dest[2048];
+    printf("%s", dest);  
     
-    removeUrlTag(testStrings, dest);
-    printf("%s", dest);    
+    FILE *fp = fopen("kecil.txt", "r");
+
+    char line[4096];
+    char noUrl[4096];
+    
+    while(fgets(line, sizeof(line), fp)){
+        // removeUrlTag(line, noUrl);
+        takeStringBetweenTag(line, noUrl);
+        printf("%s", noUrl);
+    }
+
+    // while(fgets(line, sizeof(line), fp)){
+    //     removeUrlTag(line, noUrl);
+    //     // takeStringBetweenTag(line, noUrl, "<body>", "</body>");
+    //     printf("%s", noUrl);
+    // }
+
+    fclose(fp);
+    
     return EXIT_SUCCESS;
 }
