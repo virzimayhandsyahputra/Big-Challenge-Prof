@@ -29,12 +29,17 @@ void takeStringBetweenTag(char *targetStr, char *dest){
             while(targetStr[i] != '>' && targetStr[i] != '\0'){
                 i++;
             }
-            if(targetStr[i] == '>') {i++;};
+            if(targetStr[i] == '>') {
+                i++;
+                if(j > 0 && dest[j-1] != ' '){
+                    dest[j++] = ' ';
+                }
+            };
             continue;
         }
         dest[j++] = targetStr[i++];
     }
-    dest += '\0';
+    dest[j] = '\0';
 } 
 
 
