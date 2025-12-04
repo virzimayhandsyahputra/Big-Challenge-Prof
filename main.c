@@ -30,6 +30,13 @@ void takeStringBetweenTag(char *targetStr, char *dest){
             continue;
         }
 
+        // ini untuk remove cssnya
+        if(strncmp(&targetStr[i], "< Font", 6) == 0){
+            char *endCssTag = strstr(&targetStr[i], "{pageSection1} ");
+            i = (endCssTag - targetStr) + 7;
+            continue;
+        }
+
         // finding tag
         if(targetStr[i] == '<'){
             while(targetStr[i] != '>' && targetStr[i] != '\0'){
@@ -51,13 +58,14 @@ void takeStringBetweenTag(char *targetStr, char *dest){
 void clearStrings(char *targetStr, char *dest){
     int i = 0, j = 0;
     while(targetStr[i] != '\0'){
-        if(targetStr[i] == ' '){
+        if(targetStr[i] == ' '){ 
+            dest[j++] = ' '; 
+        } else if(targetStr[i] == '.' && isalpha((char) targetStr[i+1])){
             dest[j++] = ' ';
-        }
-
-        if(isalpha((char) targetStr[i])){
+        } else if(isalpha((char) targetStr[i])){   
             dest[j++] = tolower(targetStr[i]);
-        } 
+        }
+         
         i++;
     }
     dest[j] = '\0';
