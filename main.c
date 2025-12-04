@@ -12,6 +12,12 @@
 //     int frekuensi;
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
+// typedef struct {
+//     char kata[1024];
+//     int frekuensi;
+//     int panjangKata;
+// }
+
 void takeStringBetweenTag(char *targetStr, char *dest){
     int i = 0, j = 0;
 
@@ -34,7 +40,7 @@ void takeStringBetweenTag(char *targetStr, char *dest){
                 if(j > 0 && dest[j-1] != ' '){
                     dest[j++] = ' ';
                 }
-            };
+            }
             continue;
         }
         dest[j++] = targetStr[i++];
@@ -42,29 +48,40 @@ void takeStringBetweenTag(char *targetStr, char *dest){
     dest[j] = '\0';
 } 
 
+void clearStrings(char *targetStr, char *dest){
+    int i = 0, j = 0;
+    while(targetStr[i] != '\0'){
+        if(targetStr[i] == ' '){
+            dest[j++] = ' ';
+        }
+
+        if(isalpha((char) targetStr[i])){
+            dest[j++] = tolower(targetStr[i]);
+        } 
+        i++;
+    }
+    dest[j] = '\0';
+}
+
 
 int main(){
-    // char testStrings[2048] = "<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang. Di musim ini, pemain berusia 30 tahun ini gagal mendapatkan tempat utama di skuad Antonio Conte. Dia kalah bersaing dengan Sebastian Giovinco serta Mirko Vucinic. Kondisi itu yang coba dimanfaatkan oleh La Beneamata untuk membujuk mantan pemain Napoli tersebut agar mau berkostum biru hitam. Bahkan Mediaset mengabarkan bahwa pihak Inter sudah menghubungi agen Quagliarella, Beppe Bozzo untuk melakukan pembicaraan soal kemungkinan kliennya pindah ke Giuseppe Meazza. Transfer ini mungkin saja terjadi. Pasalnya, Inter memang sudah lama dihubung hubungkan dengan Quagliarella sejak musim panas tahun lalu.</body>AAAAA<url>https_++soccer.sindonews.com+read+719945+56+inter-tawar-fabio-quagliarella-1361377464.html</url><title>Inter tawar Fabio Quagliarella</title><body>Sindonews.com Media di Italia, Mediaset melaporkan bahwa Inter Milan sudah mengajukan tawaran sebesar 7 juta poundsterling (setara Rp103 miliar) kepada Juventus. Nilai tawaran itu untuk memboyong Fabio Quagliarella pada bursa transfer musim panas mendatang</body>";
-
-    char dest[2048];
+    char dest[4096];
     printf("%s", dest);  
     
     FILE *fp = fopen("kecil.txt", "r");
 
     char line[4096];
-    char noUrl[4096];
+    char noTag[4096];
     
-    while(fgets(line, sizeof(line), fp)){
-        // removeUrlTag(line, noUrl);
-        takeStringBetweenTag(line, noUrl);
-        printf("%s", noUrl);
+    while(fgets(line, sizeof(line), fp) != NULL){
+        takeStringBetweenTag(line, noTag);
+        clearStrings(noTag, noTag);
+        // char *token = strtok(noTag, delims);
+        // while(token != NULL){
+        //     token = strtok(NULL, delims); 
+        // }
+        printf("%s", noTag);
     }
-
-    // while(fgets(line, sizeof(line), fp)){
-    //     removeUrlTag(line, noUrl);
-    //     // takeStringBetweenTag(line, noUrl, "<body>", "</body>");
-    //     printf("%s", noUrl);
-    // }
 
     fclose(fp);
     
