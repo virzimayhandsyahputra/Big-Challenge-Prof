@@ -31,7 +31,7 @@ int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("50k.txt", "r");
+    FILE *fp = fopen("5k.txt", "r");
 
     char line[90000];
     char noTag[90000];
