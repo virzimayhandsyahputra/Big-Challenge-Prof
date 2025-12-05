@@ -24,14 +24,14 @@ int jumlahKataAbjad[26] = {0};
 void takeStringBetweenTag(char *targetStr, char *dest);
 void clearStrings(char *targetStr, char *dest);
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token);
-// int countHowManyWord(StoringWordsInfo listKata[], int *countWord, char *abjad);
+void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]);
 
 StoringWordsInfo listKata[90000];
 int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("5k.txt", "r");
+    FILE *fp = fopen("kecil.txt", "r");
 
     char line[90000];
     char noTag[90000];
@@ -48,6 +48,8 @@ int main(){
     }
     fclose(fp);
 
+    writeToBin(listKata, &countWord, jumlahKataAbjad);
+    debugBacaFileBin("out.bin");
     // int jumlahKataAbjad = 0;
     // for(int i = 'a'; i <= 'z'; i++){
     //     for(int j = 0; j <= countWord; j++){
@@ -150,6 +152,24 @@ void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
     jumlahKataAbjad[token[0] - 'a']++;
 }
 
-// void writeToBin(char *fileName, StoringWordsInfo listKata[], int *countWord){
-//     fwrite()
-// }
+void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]){
+    FILE *binFptr = fopen("out.bin", "wb");
+    if(binFptr == NULL){ return; }
+
+    for(char abjad = 'a'; abjad <= 'z'; abjad++){
+        int i = abjad - 'a';
+        int jumlah = jumlahKataAbjad[i];
+
+        fwrite(&abjad, sizeof(char), 1, binFptr);
+        fwrite(&jumlah, sizeof(int), 1, binFptr);
+
+        for(int j = 0; j < *countWord; j++){
+            if(listKata[j].abjad == abjad){
+                fwrite(&listKata[j].panjangKata, sizeof(int), 1, binFptr);
+                fwrite(&listKata[j].kata, sizeof(char), listKata[j].panjangKata, binFptr);
+                fwrite(&listKata[j].frekuensi, sizeof(int), 1, binFptr);
+            }
+        }
+    }
+    fclose(binFptr);
+}
