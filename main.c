@@ -12,13 +12,60 @@
 //     int frekuensi;
 // } InilahNantiYangBakalDitampilinKeOutputnyaKING
 
-// typedef struct {
-//     char kata[1024];
-//     int frekuensi;
-//     int panjangKata;
-// }
+typedef struct {
+    char abjad; 
+    char kata[1024];
+    int frekuensi;
+    int panjangKata;
+} StoringWordsInfo;
+
+void takeStringBetweenTag(char *targetStr, char *dest);
+void clearStrings(char *targetStr, char *dest);
+void addWord(StoringWordsInfo listKata[], int *countWord, char *token);
+
+StoringWordsInfo listKata[4096];
+int countWord = 0;
+char *delims = " \n";
+
+int main(){
+    char dest[4096];
+    
+    FILE *fp = fopen("kecil.txt", "r");
+
+    char line[4096];
+    char noTag[4096];
+    
+    while(fgets(line, sizeof(line), fp) != NULL){
+        takeStringBetweenTag(line, noTag);
+        clearStrings(noTag, noTag);
+        char *token = strtok(noTag, delims);
+        while(token != NULL){
+            addWord(listKata, &countWord, token);
+            token = strtok(NULL, delims); 
+        }
+        // printf("%s", noTag);
+    }
+
+    fclose(fp);
+    
+    // debug struct
+    printf("\n isi struct\n");
+    for(int i = 0; i < countWord; i++){
+        printf("[%c][%d][%s][%d]\n", 
+            listKata[i].abjad, 
+            listKata[i].panjangKata, 
+            listKata[i].kata,
+            listKata[i].frekuensi
+        );
+    }
+
+
+    return EXIT_SUCCESS;
+}
 
 void takeStringBetweenTag(char *targetStr, char *dest){
+    if(targetStr == NULL && dest == NULL){return;}
+
     int i = 0, j = 0;
 
     // remove url bro
@@ -56,6 +103,8 @@ void takeStringBetweenTag(char *targetStr, char *dest){
 } 
 
 void clearStrings(char *targetStr, char *dest){
+    if(targetStr == NULL && dest == NULL){return;}
+
     int i = 0, j = 0;
     while(targetStr[i] != '\0'){
         if(targetStr[i] == ' '){ 
@@ -71,27 +120,19 @@ void clearStrings(char *targetStr, char *dest){
     dest[j] = '\0';
 }
 
-
-int main(){
-    char dest[4096];
-    printf("%s", dest);  
-    
-    FILE *fp = fopen("kecil.txt", "r");
-
-    char line[4096];
-    char noTag[4096];
-    
-    while(fgets(line, sizeof(line), fp) != NULL){
-        takeStringBetweenTag(line, noTag);
-        clearStrings(noTag, noTag);
-        // char *token = strtok(noTag, delims);
-        // while(token != NULL){
-        //     token = strtok(NULL, delims); 
-        // }
-        printf("%s", noTag);
+void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
+    // cek dulu ada atau engga
+    for(int i = 0; i < *countWord; i++){
+        if(strcmp(listKata[i].kata, token) == 0){
+            listKata[i].frekuensi++;
+            return;
+        }
     }
 
-    fclose(fp);
-    
-    return EXIT_SUCCESS;
+    //kalo engga ada
+    listKata[*countWord].abjad = token[0]; 
+    strcpy(listKata[*countWord].kata, token);
+    listKata[*countWord].frekuensi = 1;
+    listKata[*countWord].panjangKata = strlen(token);
+    (*countWord)++;
 }
