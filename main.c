@@ -19,22 +19,22 @@ typedef struct {
     int frekuensi;
 } StoringWordsInfo;
 
+int jumlahKataAbjad[26] = {0};
+
 void takeStringBetweenTag(char *targetStr, char *dest);
 void clearStrings(char *targetStr, char *dest);
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token);
 // int countHowManyWord(StoringWordsInfo listKata[], int *countWord, char *abjad);
 
-StoringWordsInfo listKata[4096];
+StoringWordsInfo listKata[90000];
 int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    char dest[4096];
-    
-    FILE *fp = fopen("kecil.txt", "r");
+    FILE *fp = fopen("50k.txt", "r");
 
-    char line[4096];
-    char noTag[4096];
+    char line[90000];
+    char noTag[90000];
     
     while(fgets(line, sizeof(line), fp) != NULL){
         takeStringBetweenTag(line, noTag);
@@ -46,19 +46,19 @@ int main(){
         }
         // printf("%s", noTag);
     }
-
-    int jumlahKataAbjad = 0;
-    for(int i = 'a'; i <= 'z'; i++){
-        for(int j = 0; j <= countWord; j++){
-            if(listKata[j].abjad == i){
-                jumlahKataAbjad++;
-            }
-        }
-        printf("%c Berjumlah %d\n", i, jumlahKataAbjad);
-        jumlahKataAbjad = 0;
-    }
-
     fclose(fp);
+
+    // int jumlahKataAbjad = 0;
+    // for(int i = 'a'; i <= 'z'; i++){
+    //     for(int j = 0; j <= countWord; j++){
+    //         if(listKata[j].abjad == i){
+    //             jumlahKataAbjad++;
+    //         }
+    //     }
+    //     printf("%c Berjumlah %d\n", i, jumlahKataAbjad);
+    //     jumlahKataAbjad = 0;
+    // }
+
     
     // debug struct
     // printf("\n isi struct\n");
@@ -132,7 +132,7 @@ void clearStrings(char *targetStr, char *dest){
 
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
     // cek dulu ada atau engga
-    for(int i = 0; i <= *countWord; i++){
+    for(int i = 0; i < *countWord; i++){
         if(strcmp(listKata[i].kata, token) == 0){
             listKata[i].frekuensi++;
             return;
@@ -144,15 +144,12 @@ void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
     strcpy(listKata[*countWord].kata, token);
     listKata[*countWord].frekuensi = 1;
     listKata[*countWord].panjangKata = strlen(token);
+
+    
     (*countWord)++;
+    jumlahKataAbjad[token[0] - 'a']++;
 }
 
-// int countHowManyWord(StoringWordsInfo listKata[], int *countWord, char *abjad){
-//     int jumlahKataAbjad = 0;
-//     for(int j = 0; j < *countWord; j++){
-//         if(listKata[j].abjad == *abjad){
-//             jumlahKataAbjad++;
-//         }
-//     }
-//     return jumlahKataAbjad;
+// void writeToBin(char *fileName, StoringWordsInfo listKata[], int *countWord){
+//     fwrite()
 // }
