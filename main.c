@@ -31,7 +31,11 @@ int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("kecil.txt", "r");
+    FILE *fp = fopen("50k.txt", "r");
+    if(fp == NULL){
+        printf("[!] File Not Found");
+        return EXIT_FAILURE;
+    }
 
     char line[90000];
     char noTag[90000];
@@ -49,30 +53,6 @@ int main(){
     fclose(fp);
 
     writeToBin(listKata, &countWord, jumlahKataAbjad);
-    debugBacaFileBin("out.bin");
-    // int jumlahKataAbjad = 0;
-    // for(int i = 'a'; i <= 'z'; i++){
-    //     for(int j = 0; j <= countWord; j++){
-    //         if(listKata[j].abjad == i){
-    //             jumlahKataAbjad++;
-    //         }
-    //     }
-    //     printf("%c Berjumlah %d\n", i, jumlahKataAbjad);
-    //     jumlahKataAbjad = 0;
-    // }
-
-    
-    // debug struct
-    // printf("\n isi struct\n");
-    // for(int i = 0; i < countWord; i++){
-    //     printf("[%c][%d][%s][%d]\n", 
-    //         listKata[i].abjad, 
-    //         listKata[i].panjangKata, 
-    //         listKata[i].kata,
-    //         listKata[i].frekuensi
-    //     );
-    // }
-
 
     return EXIT_SUCCESS;
 }
