@@ -54,7 +54,7 @@ int main(){
     fclose(fp);
 
     // printf("%d", countWord);
-    writeToTxt(listKata, &countWord, jumlahKataAbjad);
+    writeToBin(listKata, &countWord, jumlahKataAbjad);
 
     return EXIT_SUCCESS;
 }
