@@ -137,24 +137,24 @@ void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
     }
 }
 
-// void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]){
-//     FILE *binFptr = fopen("out.bin", "wb");
-//     if(binFptr == NULL){ return; }
+void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]){
+    FILE *binFptr = fopen("out.bin", "wb");
+    if(binFptr == NULL){ return; }
 
-//     for(char abjad = 'a'; abjad <= 'z'; abjad++){
-//         int i = abjad - 'a';
-//         int jumlah = jumlahKataAbjad[i];
+    for(char abjad = 'a'; abjad <= 'z'; abjad++){
+        int i = abjad - 'a';
+        int jumlah = jumlahKataAbjad[i];
 
-//         fwrite(&abjad, sizeof(char), 1, binFptr);
-//         fwrite(&jumlah, sizeof(int), 1, binFptr);
+        fwrite(&abjad, sizeof(char), 1, binFptr);
+        fwrite(&jumlah, sizeof(int), 1, binFptr);
 
-//         for(int j = 0; j < *countWord; j++){
-//             if(listKata[j].abjad == abjad){
-//                 fwrite(&listKata[j].panjangKata, sizeof(int), 1, binFptr);
-//                 fwrite(&listKata[j].kata, sizeof(char), listKata[j].panjangKata, binFptr);
-//                 fwrite(&listKata[j].frekuensi, sizeof(int), 1, binFptr);
-//             }
-//         }
-//     }
-//     fclose(binFptr);
-// }
+        for(int j = 0; j < *countWord; j++){
+            if(listKata[j].abjad == abjad){
+                fwrite(&listKata[j].panjangKata, sizeof(int), 1, binFptr);
+                fwrite(&listKata[j].kata, sizeof(char), listKata[j].panjangKata, binFptr);
+                fwrite(&listKata[j].frekuensi, sizeof(int), 1, binFptr);
+            }
+        }
+    }
+    fclose(binFptr);
+}
