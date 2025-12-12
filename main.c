@@ -33,7 +33,7 @@ int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("kecil.txt", "r");
+    FILE *fp = fopen("1k.txt", "r");
     if(fp == NULL){
         printf("[!] File Not Found");
         return EXIT_FAILURE;
@@ -46,19 +46,19 @@ int main(){
     while(fgets(line, sizeof(line), fp) != NULL){
         takeStringBetweenTag(line, noTag);
         clearStrings(noTag, clean);
-        printf("%s", clean);
-        // char *token = strtok(clean, delims);
-        // while(token != NULL){
-        //     addWord(listKata, &countWord, token);
-        //     // printf("%s \n", token);
-        //     token = strtok(NULL, delims); 
-        // }
+        // printf("%s", clean);
+        char *token = strtok(clean, delims);
+        while(token != NULL){
+            addWord(listKata, &countWord, token);
+            // printf("%s \n", token);
+            token = strtok(NULL, delims); 
+        }
     }
     fclose(fp);
 
     // printf("%d", countWord);
-    // insertionSort(listKata, &countWord);
-    // writeToBin(listKata, &countWord, jumlahKataAbjad);
+    insertionSort(listKata, &countWord);
+    writeToBin(listKata, &countWord, jumlahKataAbjad);
 
     return EXIT_SUCCESS;
 }
