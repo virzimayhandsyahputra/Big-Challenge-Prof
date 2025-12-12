@@ -26,13 +26,14 @@ void takeStringBetweenTag(char *targetStr, char *dest);
 void clearStrings(char *targetStr, char *dest);
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token);
 void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]);
+void insertionSort(StoringWordsInfo listKata[], int *countWord);
 
 StoringWordsInfo listKata[MAX_WORD];
 int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("50k.txt", "r");
+    FILE *fp = fopen("kecil.txt", "r");
     if(fp == NULL){
         printf("[!] File Not Found");
         return EXIT_FAILURE;
@@ -40,27 +41,30 @@ int main(){
 
     char line[4096];
     char noTag[4096];
+    char clean[4096];
     
     while(fgets(line, sizeof(line), fp) != NULL){
         takeStringBetweenTag(line, noTag);
-        clearStrings(noTag, noTag);
-        char *token = strtok(noTag, delims);
-        while(token != NULL){
-            addWord(listKata, &countWord, token);
-            token = strtok(NULL, delims); 
-        }
-        // printf("%s", noTag);
+        clearStrings(noTag, clean);
+        printf("%s", clean);
+        // char *token = strtok(clean, delims);
+        // while(token != NULL){
+        //     addWord(listKata, &countWord, token);
+        //     // printf("%s \n", token);
+        //     token = strtok(NULL, delims); 
+        // }
     }
     fclose(fp);
 
     // printf("%d", countWord);
-    writeToBin(listKata, &countWord, jumlahKataAbjad);
+    // insertionSort(listKata, &countWord);
+    // writeToBin(listKata, &countWord, jumlahKataAbjad);
 
     return EXIT_SUCCESS;
 }
 
 void takeStringBetweenTag(char *targetStr, char *dest){
-    if(targetStr == NULL && dest == NULL){return;}
+    if(targetStr == NULL || dest == NULL){return;}
 
     int i = 0, j = 0;
 
@@ -101,18 +105,25 @@ void clearStrings(char *targetStr, char *dest){
     if(targetStr == NULL || dest == NULL){return;}
 
     int i = 0, j = 0;
+    bool lastSpace = false;
     while(targetStr[i] != '\0'){
-        if(targetStr[i] == ' '){ 
-            dest[j++] = ' '; 
-        } else if(targetStr[i] == '.' && targetStr[i+1] != '\0' && isalpha((char) targetStr[i+1])){
-            dest[j++] = ' ';
-        } else if(isalpha((char) targetStr[i])){   
-            dest[j++] = tolower(targetStr[i]);
+        if(isalpha((unsigned char) targetStr[i])){
+            dest[j++] = tolower((unsigned char) targetStr[i]);
+            lastSpace = false;
         }
-         
+        else if(i > 0 && targetStr[i+1] != '\0' && targetStr[i] == '.' && isalpha(targetStr[i-1]) && isalpha(targetStr[i+1])){
+            dest[j++] = ' ';
+        }
+        else if(targetStr[i] == ' '){
+            if(!lastSpace){
+                dest[j++] = ' ';
+                lastSpace = true;
+            }
+        } 
         i++;
     }
-    dest[j] = '\0';
+    if(j > 0 && dest[j-1] == ' '){dest[j-1] = '\0';} 
+    else {dest[j] = '\0';}
 }
 
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
@@ -137,13 +148,41 @@ void addWord(StoringWordsInfo listKata[], int *countWord, char *token){
     }
 }
 
+void insertionSort(StoringWordsInfo listKata[], int *countWord){
+    for(int i = 1; i < *countWord; i++){
+        StoringWordsInfo key = listKata[i];
+        int j = i - 1;
+
+        while(j >= 0){
+            bool swap = false;
+            if(key.abjad != listKata[j].abjad){
+                if(key.abjad < listKata[j].abjad){swap=true;}
+            } 
+            else if(key.frekuensi != listKata[j].frekuensi){
+                if(key.frekuensi > listKata[j].frekuensi){swap=true;}
+            }
+            else if(key.panjangKata != listKata[j].panjangKata){
+                if(key.panjangKata > listKata[j].panjangKata){swap=true;}
+            }
+            else{
+                if(strcmp(key.kata, listKata[j].kata) > 0){swap=true;}
+            }
+                
+            if(swap == true){
+                listKata[j+1] = listKata[j];
+                j--;
+            } else {break;}
+        }
+        listKata[j+1] = key;
+    }
+}
+
 void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]){
     FILE *binFptr = fopen("out.bin", "wb");
     if(binFptr == NULL){ return; }
 
     for(char abjad = 'a'; abjad <= 'z'; abjad++){
-        int i = abjad - 'a';
-        int jumlah = jumlahKataAbjad[i];
+        int jumlah = jumlahKataAbjad[abjad - 'a'];
 
         fwrite(&abjad, sizeof(char), 1, binFptr);
         fwrite(&jumlah, sizeof(int), 1, binFptr);
