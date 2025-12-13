@@ -27,38 +27,65 @@ void clearStrings(char *targetStr, char *dest);
 void addWord(StoringWordsInfo listKata[], int *countWord, char *token);
 void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]);
 void insertionSort(StoringWordsInfo listKata[], int *countWord);
+void readBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]);
+void showWords(StoringWordsInfo listKata[], int countWord, int jumlah);
 
 StoringWordsInfo listKata[MAX_WORD];
 int countWord = 0;
 char *delims = " \n";
 
 int main(){
-    FILE *fp = fopen("1k.txt", "r");
+    char namaFile[256];
+
+    printf("Masukkan nama file input: ");
+    scanf("%255s", namaFile);
+
+    FILE *fp = fopen(namaFile, "r");
     if(fp == NULL){
-        printf("[!] File Not Found");
+        printf("[!] File Not Found\n");
         return EXIT_FAILURE;
     }
 
     char line[4096];
     char noTag[4096];
-    char clean[4096];
-    
+
     while(fgets(line, sizeof(line), fp) != NULL){
         takeStringBetweenTag(line, noTag);
-        clearStrings(noTag, clean);
-        // printf("%s", clean);
-        char *token = strtok(clean, delims);
+        clearStrings(noTag, noTag);
+
+        char *token = strtok(noTag, delims);
         while(token != NULL){
             addWord(listKata, &countWord, token);
-            // printf("%s \n", token);
-            token = strtok(NULL, delims); 
+            token = strtok(NULL, delims);
         }
     }
     fclose(fp);
 
-    // printf("%d", countWord);
-    insertionSort(listKata, &countWord);
-    writeToBin(listKata, &countWord, jumlahKataAbjad);
+    int pilihan = 0;
+
+    while(pilihan != 3){
+        printf("\nMenu:\n");
+        printf("1. Simpan ke file binari\n");
+        printf("2. Tampilkan n kata per abjad\n");
+        printf("3. Keluar\n");
+        printf("Pilihan Anda: ");
+        scanf("%d", &pilihan);
+
+        if(pilihan == 1){
+            writeToBin(listKata, &countWord, jumlahKataAbjad);
+            printf("Data berhasil disimpan ke out.bin\n");
+        }else if(pilihan == 2){
+            int jumlah;
+            printf("Tampilkan berapa kata: ");
+            scanf("%d", &jumlah);
+
+            countWord = 0;
+            memset(jumlahKataAbjad, 0, sizeof(jumlahKataAbjad));
+
+            readBin(listKata, &countWord, jumlahKataAbjad);
+            showWords(listKata, countWord, jumlah);
+        }
+    }
 
     return EXIT_SUCCESS;
 }
@@ -196,4 +223,49 @@ void writeToBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad
         }
     }
     fclose(binFptr);
+}
+
+void readBin(StoringWordsInfo listKata[], int *countWord, int jumlahKataAbjad[]){
+    FILE *binFptr = fopen("out.bin", "rb");
+    if(binFptr == NULL){
+        printf("[!] File out.bin Not Found.\n");
+        return;
+    }
+
+    for(int i = 0; i < 26; i++){
+        char abjad;
+        int jumlah;
+
+        fread(&abjad, sizeof(char), 1, binFptr);
+        fread(&jumlah, sizeof(int), 1, binFptr);
+        jumlahKataAbjad[i] = jumlah;
+
+        for(int j = 0; j < jumlah; j++){
+            fread(&listKata[*countWord].panjangKata, sizeof(int), 1, binFptr);
+            fread(listKata[*countWord].kata, sizeof(char), listKata[*countWord].panjangKata, binFptr);
+            listKata[*countWord].kata[listKata[*countWord].panjangKata] = '\0';
+            fread(&listKata[*countWord].frekuensi, sizeof(int), 1, binFptr);
+            listKata[*countWord].abjad = abjad;
+            (*countWord)++;
+        }
+    }
+    fclose(binFptr);
+}
+
+void showWords(StoringWordsInfo listKata[], int countWord, int jumlah){
+    for(char abjad = 'a'; abjad <= 'z'; abjad++){
+        printf("%c {", abjad);
+        int tampil = 0;
+
+        for(int i = 0; i < countWord && tampil < jumlah; i++){
+            if(listKata[i].abjad == abjad){
+                printf("%s (%d)", listKata[i].kata, listKata[i].frekuensi);
+                tampil++;
+                if(tampil < jumlah){
+                    printf(", ");
+                }
+            }
+        }
+        printf("}\n");
+    }
 }
