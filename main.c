@@ -54,6 +54,11 @@ int main(){
     }
     fclose(fp);
 
+    // untuk debug brow (biarin aja)
+    // for(int i = 0; i < sizeof(jumlahKataAbjad) / sizeof(jumlahKataAbjad[0]); i++){
+    //     printf("%d ", jumlahKataAbjad[i]);
+    // }
+
     int pilihan = 0;
 
     while(pilihan != 3){
