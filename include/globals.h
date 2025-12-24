@@ -3,6 +3,7 @@
 
 #define MAX_WORD_PER_ALPHABETS 15000
 #define MAX_WORD_LEN 1024
+#define MAX_LINE_LEN 4096
 #define ALPHABET_SIZE 26
 
 typedef struct {

@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/fileHandling.h"
+#include "../include/parsing.h"
+#include "../include/structure.h"
 #include "../include/globals.h"
 
 void writeToBin(){
@@ -51,4 +54,23 @@ void readBin(){
         }
     }
     fclose(binFptr);
+}
+
+void processFile(FILE *fp) {
+    char line[MAX_LINE_LEN];
+    char noTag[MAX_LINE_LEN];
+    char strOnly[MAX_LINE_LEN];
+
+    char delims[] = " \n";
+    
+    while(fgets(line, sizeof(line), fp) != NULL) {
+        takeStringBetweenTag(line, noTag);
+        clearStrings(noTag, strOnly);
+        
+        char *token = strtok(strOnly, delims);
+        while(token != NULL) {
+            addWord(token);
+            token = strtok(NULL, delims);
+        }
+    }
 }

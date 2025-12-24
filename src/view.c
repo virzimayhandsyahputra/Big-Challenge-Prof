@@ -59,9 +59,12 @@ void handleMenuOption2(){
 }
 
 void handleMenu(){
-    int pilihan = 0;
+    int pilihan;
 
-    while(pilihan != 3){
+    do {
+        printMenu();
+        scanf("%d", &pilihan);
+
         switch(pilihan){
             case 1:
                 handleMenuOption1();
@@ -73,7 +76,7 @@ void handleMenu(){
                 printf("[+] Program Selesai.\n");
                 break;
             default:
-                printf("[!] Pilihan Tidak Valid, Harap Pilih 1-3");
+                printf("[!] Pilihan Tidak Valid, Harap Pilih 1-3\n");
         }
-    }
+    } while(pilihan != 3);
 }

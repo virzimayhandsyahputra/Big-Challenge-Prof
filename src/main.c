@@ -22,29 +22,7 @@ int main(){
         return EXIT_FAILURE;
     }
 
-    char line[4096];
-    char noTag[4096];
-    char strOnly[4096];
-
-    while(fgets(line, sizeof(line), fp) != NULL){
-        takeStringBetweenTag(line, noTag);
-        clearStrings(noTag, strOnly);
-        // printf("%s", strOnly);
-
-        char *token = strtok(strOnly, " ");
-        while(token != NULL){
-            addWord(token);
-            // printf("%s", token)
-            token = strtok(NULL, " \n");
-        }
-    }
-    fclose(fp);
-
-    // untuk debug brow (biarin aja)
-    // for(int i = 0; i < sizeof(jumlahKataPerAbjad) / sizeof(jumlahKataPerAbjad[0]); i++){
-    //     printf("%d ", jumlahKataPerAbjad[i]);
-    // }
-
+    if(processFile(fp) > 0){}
     handleMenu();
 
     return EXIT_SUCCESS;

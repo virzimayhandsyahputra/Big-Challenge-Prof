@@ -5,5 +5,6 @@
 
 void writeToBin();
 void readBin();
+void processFile();
 
 #endif
