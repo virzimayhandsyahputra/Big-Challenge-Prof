@@ -45,35 +45,7 @@ int main(){
     //     printf("%d ", jumlahKataPerAbjad[i]);
     // }
 
-    int pilihan = 0;
-
-    while(pilihan != 3){
-        printf("\nMenu:\n");
-        printf("1. Simpan ke file binari\n");
-        printf("2. Tampilkan n kata per abjad\n");
-        printf("3. Keluar\n");
-        printf("Pilihan Anda: ");
-        scanf("%d", &pilihan);
-            
-        if(pilihan == 1){
-            for(int i = 0; i < 26; i++){
-                if(jumlahKataPerAbjad[i] > 0){
-                    perLetterInsertionSort(i);
-                }
-            }
-            writeToBin();
-            printf("Data berhasil disimpan ke out.bin\n");
-        }else if(pilihan == 2){
-            int jumlah;
-            printf("Tampilkan berapa kata: ");
-            scanf("%d", &jumlah);
-
-            memset(jumlahKataPerAbjad, 0, sizeof(jumlahKataPerAbjad));
-
-            readBin();
-            showWords(jumlah);
-        }
-    }
+    handleMenu();
 
     return EXIT_SUCCESS;
 }
