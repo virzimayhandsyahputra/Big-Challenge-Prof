@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "../include/parsing.h"
 
 void takeStringBetweenTag(char *src, char *dest){

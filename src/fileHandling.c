@@ -1,5 +1,53 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdbool.h>
+#include "../include/fileHandling.h"
+
+void writeToBin(){
+    FILE *binFptr = fopen("out.bin", "wb");
+    if(binFptr == NULL){ return; }
+
+    for(int letterIdx = 0; letterIdx < 26; letterIdx++){
+        char abjad = 'a' + letterIdx;
+        int jumlah = jumlahKataAbjad[letterIdx];
+
+        fwrite(&abjad, sizeof(char), 1, binFptr);
+        fwrite(&jumlah, sizeof(int), 1, binFptr);
+
+        // Write all words for this letter sequentially
+        for(int j = 0; j < jumlah; j++){
+            StoringWordsInfo *word = &listKataPerHuruf[letterIdx][j];
+            fwrite(&word->panjangKata, sizeof(int), 1, binFptr);
+            fwrite(word->kata, sizeof(char), word->panjangKata, binFptr);
+            fwrite(&word->frekuensi, sizeof(int), 1, binFptr);
+        }
+    }
+    fclose(binFptr);
+}
+
+void readBin(){
+    FILE *binFptr = fopen("out.bin", "rb");
+    if(binFptr == NULL){
+        printf("[!] File out.bin Not Found.\n");
+        return;
+    }
+
+    for(int i = 0; i < 26; i++){
+        char abjad;
+        int jumlah;
+
+        fread(&abjad, sizeof(char), 1, binFptr);
+        fread(&jumlah, sizeof(int), 1, binFptr);
+        
+        int letterIdx = abjad - 'a';
+        jumlahKataAbjad[letterIdx] = jumlah;
+
+        for(int j = 0; j < jumlah; j++){
+            StoringWordsInfo *kataAbjadTersimpan = &listKataPerHuruf[letterIdx][j];
+            fread(&kataAbjadTersimpan->panjangKata, sizeof(int), 1, binFptr);
+            fread(kataAbjadTersimpan->kata, sizeof(char), kataAbjadTersimpan->panjangKata, binFptr);
+            kataAbjadTersimpan->kata[kataAbjadTersimpan->panjangKata] = '\0';
+            fread(&kataAbjadTersimpan->frekuensi, sizeof(int), 1, binFptr);
+            kataAbjadTersimpan->abjad = abjad;
+        }
+    }
+    fclose(binFptr);
+}
