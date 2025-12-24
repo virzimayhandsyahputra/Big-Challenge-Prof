@@ -5,6 +5,7 @@
 #define MAX_WORD_LEN 1024
 #define MAX_LINE_LEN 4096
 #define ALPHABET_SIZE 26
+#define OUT_FILE_DIR "./bin/out.bin"
 
 typedef struct {
     char abjad;

@@ -7,7 +7,7 @@
 #include "../include/globals.h"
 
 void writeToBin(){
-    FILE *binFptr = fopen("./bin/out.bin", "wb");
+    FILE *binFptr = fopen(OUT_FILE_DIR, "wb");
     if(binFptr == NULL){ return; }
 
     for(int letterIdx = 0; letterIdx < 26; letterIdx++){
@@ -29,7 +29,7 @@ void writeToBin(){
 }
 
 void readBin(){
-    FILE *binFptr = fopen("./bin/out.bin", "rb");
+    FILE *binFptr = fopen(OUT_FILE_DIR, "rb");
     if(binFptr == NULL){
         printf("[!] File out.bin Not Found.\n");
         return;

@@ -45,7 +45,7 @@ void handleMenuOption1(){
 }
 
 void handleMenuOption2(){
-    if(checkBinFileExists("./bin/out.bin") != true){
+    if(checkBinFileExists(OUT_FILE_DIR) != true){
         printf("[!] File out.bin belum ada, harap pilih opsi 1 terlebih dahulu\n");
         return;
     }
