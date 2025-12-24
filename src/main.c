@@ -16,8 +16,6 @@ typedef struct {
 StoringWordsInfo listKataPerHuruf[26][20000];
 int jumlahKataAbjad[26] = {0};
 
-void takeStringBetweenTag(char *targetStr, char *dest);
-void clearStrings(char *targetStr, char *dest);
 void addWord(char *token);
 void writeToBin();
 void perLetterInsertionSort(int hurufId);
@@ -92,63 +90,6 @@ int main(){
     return EXIT_SUCCESS;
 }
 
-void takeStringBetweenTag(char *targetStr, char *dest){
-    if(targetStr == NULL || dest == NULL){return;}
-    dest[0] = '\0';
-    int i = 0, j = 0;
-
-    // remove url bro
-    while(targetStr[i] != '\0'){
-        if(strncmp(&targetStr[i], "<url>", 5) == 0){
-            char *endText = strstr(&targetStr[i], "</url>");
-            if(endText == NULL) {i += 5; continue;}
-            i = (endText - targetStr) + 6;
-            continue;
-        }
-
-        // ini untuk remove cssnya
-        if(strncmp(&targetStr[i], "< Font", 6) == 0){
-            char *endCssTag = strstr(&targetStr[i], "{pageSection1} ");
-            if(endCssTag == NULL) {i += 6; continue;}
-            i = (endCssTag - targetStr) + 7;
-            continue;
-        }
-
-        // finding tag
-        if(targetStr[i] == '<'){
-            while(targetStr[i] != '>' && targetStr[i] != '\0'){ i++; }
-            if(targetStr[i] == '>') {
-                i++;
-                if(j > 0 && dest[j-1] != ' '){
-                    dest[j++] = ' ';
-                }
-            }
-            continue;
-        }
-        dest[j++] = targetStr[i++];
-    }
-    dest[j] = '\0';
-} 
-
-void clearStrings(char *targetStr, char *dest){
-    int i = 0, j = 0;
-    bool lastSpace = false;
-    while(targetStr[i] != '\0'){
-        if(isalpha((char) targetStr[i])){
-            dest[j++] = tolower(targetStr[i]);
-            lastSpace = false;
-        }
-        else{
-            if(lastSpace == false){
-                dest[j++] = ' ';
-                lastSpace = true;
-            }
-        } 
-        i++;
-    }
-    if(j > 0 && dest[j-1] == ' '){j--;} 
-    dest[j] = '\0';
-}
 
 void addWord(char *token){
     if(token[0] < 'a' || token[0] > 'z'){ return; }
