@@ -7,10 +7,8 @@
 #include "../include/structure.h"
 #include "../include/view.h"
 
-StoringWordsInfo listKataPerHuruf[26][20000];
-int jumlahKataPerAbjad[26] = {0};
-
-void showWords(int jumlah);
+StoringWordsInfo listKataPerHuruf[ALPHABET_SIZE][MAX_WORD_PER_ALPHABETS];
+int jumlahKataPerAbjad[ALPHABET_SIZE] = {0};
 
 int main(){
     char namaFile[256];
