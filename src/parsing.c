@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdbool.h>
 #include "../include/parsing.h"
 
 void takeStringBetweenTag(char *src, char *dest){

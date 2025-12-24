@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 #include "../include/structure.h"
+#include "../include/globals.h"
 
 void addWord(char *token){
     if(token[0] < 'a' || token[0] > 'z'){ return; }
@@ -8,7 +11,7 @@ void addWord(char *token){
     int tokenLen = strlen(token);
 
     // cek dulu ada atau engga
-    for(int i = 0; i < jumlahKataAbjad[idHuruf]; i++){
+    for(int i = 0; i < jumlahKataPerAbjad[idHuruf]; i++){
         if( listKataPerHuruf[idHuruf][i].panjangKata == tokenLen
             && strcmp(listKataPerHuruf[idHuruf][i].kata, token) == 0){
             listKataPerHuruf[idHuruf][i].frekuensi++;
@@ -17,17 +20,17 @@ void addWord(char *token){
     }
 
     //kalo engga ada
-    StoringWordsInfo *kataBaru = &listKataPerHuruf[idHuruf][jumlahKataAbjad[idHuruf]];
+    StoringWordsInfo *kataBaru = &listKataPerHuruf[idHuruf][jumlahKataPerAbjad[idHuruf]];
     kataBaru->abjad = token[0];
     kataBaru->panjangKata = tokenLen;
     strcpy(kataBaru->kata, token);
     kataBaru->frekuensi = 1;
 
-    jumlahKataAbjad[idHuruf]++;
+    jumlahKataPerAbjad[idHuruf]++;
 }
 
 void perLetterInsertionSort(int idHuruf){
-    int count = jumlahKataAbjad[idHuruf];
+    int count = jumlahKataPerAbjad[idHuruf];
     StoringWordsInfo *arr = listKataPerHuruf[idHuruf];
 
     for(int i = 1; i < count; i++){

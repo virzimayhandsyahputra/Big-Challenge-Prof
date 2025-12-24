@@ -1,8 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define MAX_WORD_PER_ALPHABETS 15000;
-#define MAX_WORD_LEN
+#define MAX_WORD_PER_ALPHABETS 15000
+#define MAX_WORD_LEN 1024
 #define ALPHABET_SIZE 26
 
 typedef struct {
