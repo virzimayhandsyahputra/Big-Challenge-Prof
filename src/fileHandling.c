@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../include/fileHandling.h"
 #include "../include/parsing.h"
 #include "../include/structure.h"
 #include "../include/globals.h"
 
 void writeToBin(){
-    FILE *binFptr = fopen("out.bin", "wb");
+    FILE *binFptr = fopen("./bin/out.bin", "wb");
     if(binFptr == NULL){ return; }
 
     for(int letterIdx = 0; letterIdx < 26; letterIdx++){
@@ -28,7 +29,7 @@ void writeToBin(){
 }
 
 void readBin(){
-    FILE *binFptr = fopen("out.bin", "rb");
+    FILE *binFptr = fopen("./bin/out.bin", "rb");
     if(binFptr == NULL){
         printf("[!] File out.bin Not Found.\n");
         return;
@@ -73,4 +74,13 @@ void processFile(FILE *fp) {
             token = strtok(NULL, delims);
         }
     }
+}
+
+bool checkBinFileExists(char *filename){
+    FILE *fp = fopen(filename, "rb");
+    if(fp != NULL){
+        fclose(fp);
+        return true;
+    }
+    return false;
 }

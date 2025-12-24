@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 #include "../include/view.h"
 #include "../include/fileHandling.h"
@@ -38,17 +39,22 @@ void handleMenuOption1(){
                 if(jumlahKataPerAbjad[i] > 0){
                     perLetterInsertionSort(i);
                 }
-            }
+    }
     writeToBin();
     printf("Data berhasil disimpan ke out.bin\n");
 }
 
 void handleMenuOption2(){
+    if(checkBinFileExists("./bin/out.bin") != true){
+        printf("[!] File out.bin belum ada, harap pilih opsi 1 terlebih dahulu\n");
+        return;
+    }
+
     int jumlah;
     printf("Tampilkan berapa kata (0<n<=25): ");
     scanf("%d", &jumlah);
     
-    if(jumlah <= 0 || jumlah > 25) {
+    if(jumlah < 0 || jumlah > 25) {
         printf("Jumlah tidak valid! Harus antara 1-25\n");
         return;
     }
@@ -63,7 +69,10 @@ void handleMenu(){
 
     do {
         printMenu();
-        scanf("%d", &pilihan);
+        if(scanf("%d", &pilihan) != 1){
+            printf("[!] Input tidak valid");
+            return;
+        };
 
         switch(pilihan){
             case 1:

@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #ifndef FILE_HANDLING_H
 #define FILE_HANDLING_H
 
@@ -6,5 +7,6 @@
 void writeToBin();
 void readBin();
 void processFile();
+bool checkBinFileExists();
 
 #endif

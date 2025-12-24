@@ -22,7 +22,8 @@ int main(){
         return EXIT_FAILURE;
     }
 
-    if(processFile(fp) > 0){}
+    processFile(fp);
+    fclose(fp);
     handleMenu();
 
     return EXIT_SUCCESS;
