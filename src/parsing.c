@@ -8,6 +8,7 @@ void takeStringBetweenTag(char *src, char *dest){
     if(src == NULL || dest == NULL){return;}
     dest[0] = '\0';
     int i = 0, j = 0;
+    bool textInTag = false;
 
     // remove url bro
     while(src[i] != '\0'){
@@ -18,7 +19,7 @@ void takeStringBetweenTag(char *src, char *dest){
             continue;
         }
 
-        // ini untuk remove cssnya
+        // ini untuk remove cssnyan
         if(strncmp(&src[i], "< Font", 6) == 0){
             char *endCssTag = strstr(&src[i], "{pageSection1} ");
             if(endCssTag == NULL) {i += 6; continue;}
@@ -26,18 +27,14 @@ void takeStringBetweenTag(char *src, char *dest){
             continue;
         }
 
-        // finding tag
-        if(src[i] == '<'){
-            while(src[i] != '>' && src[i] != '\0'){ i++; }
-            if(src[i] == '>') {
-                i++;
-                if(j > 0 && dest[j-1] != ' '){
-                    dest[j++] = ' ';
-                }
-            }
-            continue;
-        }
-        dest[j++] = src[i++];
+        // take string between body and title
+        if(strncmp(&src[i], "<title>", 7) == 0) {   textInTag = true;   i += 7;     continue; }
+        if(strncmp(&src[i], "</title>", 8) == 0){   textInTag = false;  i += 8;     continue; }
+        if(strncmp(&src[i], "<body>", 6) == 0)  {   textInTag = true;   i += 6;     continue; }
+        if(strncmp(&src[i], "</body>", 7) == 0) {   textInTag = false;  i += 7;     continue; }
+        
+        if(textInTag){  dest[j++] = src[i]; }
+        i++;
     }
     dest[j] = '\0';
 } 
