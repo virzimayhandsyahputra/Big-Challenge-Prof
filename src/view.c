@@ -35,13 +35,15 @@ void printMenu(){
 }
 
 void handleMenuOption1(){
+    printf("[+] File sedang disimpan. Harap menunggu\n");
+    fflush(stdout);
     for(int i = 0; i < 26; i++){
                 if(jumlahKataUnikPerAbjad[i] > 0){
                     perLetterInsertionSort(i);
                 }
     }
     writeToBin();
-    printf("Data berhasil disimpan ke out.bin\n");
+    printf("[+] Data berhasil disimpan ke out.bin\n");
 }
 
 void handleMenuOption2(){

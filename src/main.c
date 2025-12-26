@@ -15,6 +15,8 @@ int main(){
 
     printf("Masukkan nama file input: ");
     scanf("%255s", namaFile);
+    printf("[+] File sedang dalam proses penyortiran. Harap menunggu\n");
+    fflush(stdout);
 
     FILE *fp = fopen(namaFile, "r");
     if(fp == NULL){
