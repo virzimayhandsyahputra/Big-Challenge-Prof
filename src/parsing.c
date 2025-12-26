@@ -44,7 +44,7 @@ void clearStrings(char *targetStr, char *dest){
     int i = 0, j = 0;
     bool lastSpace = false;
     while(targetStr[i] != '\0'){
-        if(isalpha((char) targetStr[i])){
+        if(isalpha((unsigned char) targetStr[i])){
             dest[j++] = tolower(targetStr[i]);
             lastSpace = false;
         }
