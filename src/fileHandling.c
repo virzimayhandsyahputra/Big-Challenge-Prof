@@ -12,7 +12,7 @@ void writeToBin(){
 
     for(int letterIdx = 0; letterIdx < 26; letterIdx++){
         char abjad = 'a' + letterIdx;
-        int jumlah = jumlahKataPerAbjad[letterIdx];
+        int jumlah = jumlahKataUnikPerAbjad[letterIdx];
 
         fwrite(&abjad, sizeof(char), 1, binFptr);
         fwrite(&jumlah, sizeof(int), 1, binFptr);
@@ -43,7 +43,7 @@ void readBin(){
         fread(&jumlah, sizeof(int), 1, binFptr);
         
         int letterIdx = abjad - 'a';
-        jumlahKataPerAbjad[letterIdx] = jumlah;
+        jumlahKataUnikPerAbjad[letterIdx] = jumlah;
 
         for(int j = 0; j < jumlah; j++){
             StoringWordsInfo *kataAbjadTersimpan = &listKataPerHuruf[letterIdx][j];

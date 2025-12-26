@@ -8,7 +8,7 @@
 #include "../include/view.h"
 
 StoringWordsInfo listKataPerHuruf[ALPHABET_SIZE][MAX_WORD_PER_ALPHABETS];
-int jumlahKataPerAbjad[ALPHABET_SIZE] = {0};
+int jumlahKataUnikPerAbjad[ALPHABET_SIZE] = {0};
 
 int main(){
     char namaFile[256];
@@ -24,6 +24,9 @@ int main(){
 
     processFile(fp);
     fclose(fp);
+    // for(int i = 0; i < 26; i++){
+    //     printf("%d\t", jumlahKataUnikPerAbjad[i]);
+    // }
     handleMenu();
 
     return EXIT_SUCCESS;

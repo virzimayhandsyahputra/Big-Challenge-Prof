@@ -11,7 +11,7 @@ void addWord(char *token){
     int tokenLen = strlen(token);
 
     // cek dulu ada atau engga
-    for(int i = 0; i < jumlahKataPerAbjad[idHuruf]; i++){
+    for(int i = 0; i < jumlahKataUnikPerAbjad[idHuruf]; i++){
         if( listKataPerHuruf[idHuruf][i].panjangKata == tokenLen
             && strcmp(listKataPerHuruf[idHuruf][i].kata, token) == 0){
             listKataPerHuruf[idHuruf][i].frekuensi++;
@@ -20,17 +20,17 @@ void addWord(char *token){
     }
 
     //kalo engga ada
-    StoringWordsInfo *kataBaru = &listKataPerHuruf[idHuruf][jumlahKataPerAbjad[idHuruf]];
+    StoringWordsInfo *kataBaru = &listKataPerHuruf[idHuruf][jumlahKataUnikPerAbjad[idHuruf]];
     kataBaru->abjad = token[0];
     kataBaru->panjangKata = tokenLen;
     strcpy(kataBaru->kata, token);
     kataBaru->frekuensi = 1;
 
-    jumlahKataPerAbjad[idHuruf]++;
+    jumlahKataUnikPerAbjad[idHuruf]++;
 }
 
 void perLetterInsertionSort(int idHuruf){
-    int count = jumlahKataPerAbjad[idHuruf];
+    int count = jumlahKataUnikPerAbjad[idHuruf];
     StoringWordsInfo *arr = listKataPerHuruf[idHuruf];
 
     for(int i = 1; i < count; i++){

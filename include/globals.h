@@ -15,6 +15,6 @@ typedef struct {
 } StoringWordsInfo;
 
 extern StoringWordsInfo listKataPerHuruf[ALPHABET_SIZE][MAX_WORD_PER_ALPHABETS];
-extern int jumlahKataPerAbjad[ALPHABET_SIZE];
+extern int jumlahKataUnikPerAbjad[ALPHABET_SIZE];
 
 #endif 

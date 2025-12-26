@@ -12,7 +12,7 @@ void showWords(int jumlah){
         printf("%c {", abjad);
         
         int tampil = 0;
-        int count = jumlahKataPerAbjad[letterIdx];
+        int count = jumlahKataUnikPerAbjad[letterIdx];
 
         for(int i = 0; i < count && tampil < jumlah; i++){
             StoringWordsInfo *word = &listKataPerHuruf[letterIdx][i];
@@ -36,7 +36,7 @@ void printMenu(){
 
 void handleMenuOption1(){
     for(int i = 0; i < 26; i++){
-                if(jumlahKataPerAbjad[i] > 0){
+                if(jumlahKataUnikPerAbjad[i] > 0){
                     perLetterInsertionSort(i);
                 }
     }
@@ -59,7 +59,7 @@ void handleMenuOption2(){
         return;
     }
     
-    memset(jumlahKataPerAbjad, 0, sizeof(jumlahKataPerAbjad));
+    memset(jumlahKataUnikPerAbjad, 0, sizeof(jumlahKataUnikPerAbjad));
     readBin();
     showWords(jumlah);
 }
