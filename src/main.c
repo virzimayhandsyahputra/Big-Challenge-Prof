@@ -23,11 +23,11 @@ int main(){
     }
 
     processFile(fp);
-    fclose(fp);
-    // for(int i = 0; i < 26; i++){
-    //     printf("%d\t", jumlahKataUnikPerAbjad[i]);
-    // }
-    handleMenu();
+    // fclose(fp);
+    for(int i = 0; i < 26; i++){
+        printf("%d\t", jumlahKataUnikPerAbjad[i]);
+    }
+    // handleMenu();
 
     return EXIT_SUCCESS;
 }
