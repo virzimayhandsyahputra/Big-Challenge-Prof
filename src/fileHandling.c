@@ -17,7 +17,6 @@ void writeToBin(){
         fwrite(&abjad, sizeof(char), 1, binFptr);
         fwrite(&jumlah, sizeof(int), 1, binFptr);
 
-        // Write all words for this letter sequentially
         for(int j = 0; j < jumlah; j++){
             StoringWordsInfo *word = &listKataPerHuruf[letterIdx][j];
             fwrite(&word->panjangKata, sizeof(int), 1, binFptr);

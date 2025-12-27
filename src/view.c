@@ -57,7 +57,7 @@ void handleMenuOption2(){
     scanf("%d", &jumlah);
     
     if(jumlah < 0 || jumlah > 25) {
-        printf("Jumlah tidak valid! Harus antara 1-25\n");
+        printf("Jumlah tidak valid! Harus antara 0-25\n");
         return;
     }
     
